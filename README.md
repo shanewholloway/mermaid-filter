@@ -1,3 +1,9 @@
+**Shane's Notes:**  This is a simple fork of
+[raghur/mermaid-filter](https://github.com/raghur/mermaid-filter) to use peer
+dependencies on mermaid and mermaid.cli instead of internal dependencies.
+
+---
+
 Sequence and Graph diagrams in your markdown files!
 =========================
 
