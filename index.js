@@ -2,6 +2,7 @@
 var pandoc=require('pandoc-filter');
 var _ = require('lodash');
 var tmp = require('tmp');
+var which = require('which');
 var fs = require('fs');
 var path = require('path');
 var exec = require('child_process').execSync;
@@ -112,6 +113,10 @@ function externalTool(command) {
         path.resolve(__dirname, "node_modules", ".bin", command),
         path.resolve(__dirname, "..", ".bin", command)],
         function() {
+            try {
+              return `"${which.sync(command)}"`
+            } catch (err) { }
+
             console.error("External tool not found: " + command);
             process.exit(1);
         });
@@ -129,9 +134,9 @@ function mv(from, to) {
 
 function firstExisting(paths, error) {
     for (var i = 0; i < paths.length; i++) {
-        if (fs.existsSync(paths[i])) return `"${paths[i]}"`;
+        if (paths[i] && fs.existsSync(paths[i])) return `"${paths[i]}"`;
     }
-    error();
+    return error();
 }
 
 pandoc.toJSONFilter(function(type, value, format, meta) {
